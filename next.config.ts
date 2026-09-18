@@ -4,13 +4,11 @@ const nextConfig: NextConfig = {
   // Self-hosting: one self-contained server bundle (`node .next/standalone/server.js`).
   // On Vercel the platform builds its own output, so leave it unset there.
   output: process.env.VERCEL ? undefined : "standalone",
-  serverExternalPackages: ["@electric-sql/pglite", "exceljs"],
+  // exceljs stays bundled: as an external package its own deps are not traced on serverless.
+  serverExternalPackages: ["@electric-sql/pglite"],
   // SQL migrations are read from disk at startup.
   outputFileTracingIncludes: {
-    // Keys are globs, so a route with [brackets] cannot be targeted reliably — use "/**".
-    // exceljs is loaded at runtime (serverExternalPackages) and its own dependencies are
-    // not traced automatically on serverless hosts, so they are named here.
-    "/**": ["./drizzle/**/*", "./node_modules/exceljs/**/*", "./node_modules/fast-csv/**/*", "./node_modules/@fast-csv/**/*"],
+    "/**": ["./drizzle/**/*"],
   },
   // Never ship local data, secrets or source files inside the server bundle.
   outputFileTracingExcludes: {
