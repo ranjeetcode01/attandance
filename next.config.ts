@@ -7,10 +7,10 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@electric-sql/pglite", "exceljs"],
   // SQL migrations are read from disk at startup.
   outputFileTracingIncludes: {
-    "/**": ["./drizzle/**/*"],
-    // exceljs is loaded at runtime (serverExternalPackages); on serverless hosts its
-    // own dependencies are not traced automatically, so name them here.
-    "/api/export/[report]": ["./node_modules/exceljs/**/*", "./node_modules/fast-csv/**/*", "./node_modules/@fast-csv/**/*"],
+    // Keys are globs, so a route with [brackets] cannot be targeted reliably — use "/**".
+    // exceljs is loaded at runtime (serverExternalPackages) and its own dependencies are
+    // not traced automatically on serverless hosts, so they are named here.
+    "/**": ["./drizzle/**/*", "./node_modules/exceljs/**/*", "./node_modules/fast-csv/**/*", "./node_modules/@fast-csv/**/*"],
   },
   // Never ship local data, secrets or source files inside the server bundle.
   outputFileTracingExcludes: {
