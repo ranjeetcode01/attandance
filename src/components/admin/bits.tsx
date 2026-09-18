@@ -25,8 +25,10 @@ export function Empty({ children }: { children: React.ReactNode }) {
 }
 
 export function ExportLink({ href, children = "Export Excel" }: { href: string; children?: React.ReactNode }) {
+  // `download` + a new tab: an installed PWA (standalone window) otherwise swallows
+  // the file instead of saving it.
   return (
-    <a href={href} className="btn btn-secondary">
+    <a href={href} download target="_blank" rel="noopener" className="btn btn-secondary">
       {children}
     </a>
   );
