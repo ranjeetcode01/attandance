@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   // SQL migrations are read from disk at startup.
   outputFileTracingIncludes: {
     "/**": ["./drizzle/**/*"],
+    // exceljs is loaded at runtime (serverExternalPackages); on serverless hosts its
+    // own dependencies are not traced automatically, so name them here.
+    "/api/export/[report]": ["./node_modules/exceljs/**/*", "./node_modules/fast-csv/**/*", "./node_modules/@fast-csv/**/*"],
   },
   // Never ship local data, secrets or source files inside the server bundle.
   outputFileTracingExcludes: {
