@@ -43,3 +43,6 @@ next-env.d.ts
 
 # app data (local database + photos)
 /.data/
+
+.vercel
+.env*
