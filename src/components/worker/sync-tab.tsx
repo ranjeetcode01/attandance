@@ -35,7 +35,8 @@ export function SyncTab({ outbox, online, syncing, lastSync, onSync }: { outbox:
           </button>
         </div>
         <p className="mt-3 text-xs text-muted">
-          Punches are saved on the phone first and sent automatically when network is available. Do not clear browser data or uninstall the app while items are waiting.
+          Punches are saved on the phone first and sent automatically the moment network is back — Android keeps trying even when the app is
+          closed. On an iPhone, open the app once after you are back in network. Do not clear browser data or uninstall the app while items are waiting.
         </p>
       </section>
 

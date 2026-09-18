@@ -69,6 +69,10 @@ async function run(): Promise<SyncOutcome> {
     }
   }
 
+  // Still something waiting (offline, or the server was busy)? Ask the browser to
+  // retry in the background as soon as the network is back, even if the app is closed.
+  if ((await outboxAll()).some((i) => !i.failed)) requestBackgroundSync();
+
   if (out.sent === 0 && !out.offline) {
     // Nothing to send: still learn the server clock when possible.
     try {
@@ -95,7 +99,7 @@ export async function retryFailed(id: string) {
   if (item) await outboxPut({ ...item, failed: false, lastError: undefined });
 }
 
-function requestBackgroundSync() {
+export function requestBackgroundSync() {
   if (typeof navigator === "undefined" || !("serviceWorker" in navigator)) return;
   navigator.serviceWorker.ready
     .then((reg) => (reg as ServiceWorkerRegistration & { sync?: { register(tag: string): Promise<void> } }).sync?.register("outbox-sync"))
